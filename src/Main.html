@@ -1,18 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Watchlist</title>
-    <link rel="stylesheet" href="index.css">
-</head>
-<body>
-    <header>
-        <h1>Find your film</h1>
-        <div>My Watchlist
-            <a href=""></a>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="background">
+            <header>
+                <div id="header-text-container">
+                    <h1>Find your film</h1>
+                    <p>My Watchlist
+                    <a href=""></a>
+                    </p>
+                </div>
+                <div id="search-bar">
+                    <ion-icon id="search-icon" name="search-outline"></ion-icon>
+                    <input
+                    id="search-bar-input" />
+                    <input 
+                    id="search-bar-submit"
+                    value="Search"
+                    type="submit"/>   
+                </div> 
+            </header>
+            <main id="main">
+                <div id="noDataEl">
+                    <ion-icon id="film-icon" name="film-outline"></ion-icon>
+                    <p id="startExploring">Start Exploring</p>
+                </div>
+            </main>
         </div>
-    </header>
-    <script src="index.js"></script>
-</body>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>
