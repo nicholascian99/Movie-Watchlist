@@ -1,48 +1,63 @@
+let searched = ""
 
-
+// const searchBar = document.getElementById("search-bar")
+// let searched = ""
   
 document.getElementById("search-bar-submit").addEventListener('click', function(){
-    fetch("https://www.omdbapi.com/?apikey=7c371e1e&s=blade+runner")
+    searched = document.getElementById("search-bar-input").value
+    
+    fetch(`https://www.omdbapi.com/?apikey=7c371e1e&t=${encodeURIComponent(searched)}&plot=short`)
     .then(res => res.json())
-    .then(data => renderMovieHTML(data.Search)
+    .then(data => renderMovieHTML(data)
     )    
+    // console.log(plot)}
+    // console.log(searched)
+    
 }) 
 
-function getMovieHTML(movies){
+function getMovieHTML(data){
     let movieHTML = ""
       
-    movies.forEach(movie => {
+    // data.forEach(
+        // movie => {
+            if(data.Poster !== "N/A"){
               movieHTML += `
         <section class="movie-section">
             <div class="poster-container">
-                <img class="movieImg" src="${movie.Poster}"/>    
+                <img class="movieImg" src="${data.Poster}"/>    
             </div>
             <div class="title-container-wrapper">
                 <div class="title-container">
-                    <h4 class="movie-title">${movie.Title}</h4>
+                    <h4 class="movie-title">${data.Title}</h4>
                     <ion-icon class="star" name="star"></ion-icon>
-                    <p class="rating">23</p>
+                    <p class="rating">${data.imdbRating}</p>
                 </div>
                 <div class="movie-details-container">
-                    <p class="movie-length">140min</p>
-                    <p class="movie-genre">Action, Comedy</p>
+                    <p class="movie-length">${data.Runtime}</p>
+                    <p class="movie-genre">${data.Genre}</p>
                     <div class="watchlist-button-container">
                         <ion-icon class="addBtn" name="add-circle"></ion-icon>
                         <p>Watchlist</p>
                     </div>
                 </div>
                 <div>
-                    <p>A Bladerunner must pursue and terminate four replicants who stole a ship in space, and have returned to earth to find their creator</p>
+                    <p>${data.Plot}</p>
                 </div>
             </div>
         </section>
         <hr style="border:0.5px solid lightgrey"/>`
-      })
+            }
+    //   }
+    //   )
       
       return movieHTML
+    // console.log(data)
 }
   
 function renderMovieHTML(data){
       document.getElementById("main").innerHTML = getMovieHTML(data)
+    // console.log(data)
 }
+
+
 
