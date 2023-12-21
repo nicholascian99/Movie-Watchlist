@@ -1,17 +1,26 @@
 let searched = ""
+const searchBar = document.getElementById("search-bar-submit")
 
 // const searchBar = document.getElementById("search-bar")
 
 
 //adds click event to submit button that fetches OMDB API and uses that data when it calls renderMovieHTML
 
-document.getElementById("search-bar-submit").addEventListener('click', function(){
+// document.addEventListener('click', (e) => {
+//     if(e.target == searchBar){
+//         console.log(e.target)
+//     }
+// })
+
+searchBar.addEventListener('click', function(){
     searched = document.getElementById("search-bar-input").value
     
     fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
     .then(res => res.json())
-    .then(data => renderMovieHTML(data.Search)
-    )    
+    .then(data => {
+        renderMovieHTML(data.Search)
+        console.log(data)
+    })    
     
 }) 
 
@@ -27,21 +36,20 @@ document.getElementById("search-bar-submit").addEventListener('click', function(
 
 function renderMovieHTML(data){
         let myMovieHTML = ""
-        
-        data.forEach(movie => {
+        let movies = data.filter(media => media.Type === "movie")
+        movies.forEach(movie => {
         const movieId = movie.imdbID
         fetch(`https://www.omdbapi.com/?apikey=7c371e1e&i=${movieId}&plot=short`)
         .then(res => res.json())
         .then(detailsData => { 
-            console.log(detailsData)
+            // console.log(detailsData)
         
         myMovieHTML += getMovieHTML(detailsData)
       document.getElementById("main").innerHTML =  myMovieHTML
+    //   console.log(movie)
         }
     )
-        // console.log(movieId)
     })
-    //   document.getElementById("noDataEl").style.display = "none"
 }
 
 function getMovieHTML(data){
