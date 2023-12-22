@@ -1,5 +1,7 @@
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid'
 let searched = ""
 const searchBar = document.getElementById("search-bar-submit")
+const addBtn = document.querySelector(".addBtn")
 
 // const searchBar = document.getElementById("search-bar")
 
@@ -12,17 +14,21 @@ const searchBar = document.getElementById("search-bar-submit")
 //     }
 // })
 
-searchBar.addEventListener('click', function(){
-    searched = document.getElementById("search-bar-input").value
-    
-    fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
-    .then(res => res.json())
-    .then(data => {
-        renderMovieHTML(data.Search)
-        console.log(data)
-    })    
-    
-}) 
+document.addEventListener('click', (e) => {
+    if(e.target === searchBar){
+        searched = document.getElementById("search-bar-input").value
+
+        fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
+        .then(res => res.json())
+        .then(data => {
+            renderMovieHTML(data.Search)
+            console.log(data)
+        })
+    }
+    if(e.target == document.querySelectorAll("add.Btn")){
+        console.log("add")
+    }
+})
 
     
     
@@ -36,7 +42,8 @@ searchBar.addEventListener('click', function(){
 
 function renderMovieHTML(data){
         let myMovieHTML = ""
-        let movies = data.filter(media => media.Type === "movie")
+        // let movies = data.filter(media => media.Type === "movie")
+        let movies = data.filter(({Type, Poster}) => Type === "movie" && Poster != "N/A")
         movies.forEach(movie => {
         const movieId = movie.imdbID
         fetch(`https://www.omdbapi.com/?apikey=7c371e1e&i=${movieId}&plot=short`)
