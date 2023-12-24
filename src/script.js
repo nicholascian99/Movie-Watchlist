@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid'
+
+
 let searched = ""
+const myWatchlistArray = []
 const searchBar = document.getElementById("search-bar-submit")
-const addBtn = document.querySelector(".addBtn")
+// const addBtn = document.querySelector(".addBtn")
 
 // const searchBar = document.getElementById("search-bar")
 
@@ -25,20 +28,11 @@ document.addEventListener('click', (e) => {
             console.log(data)
         })
     }
-    if(e.target == document.querySelectorAll("add.Btn")){
-        console.log("add")
-    }
+    // if(e.target.dataset == "addBtn"){
+    //     console.log("add")
+    // }
+    console.log(e.target.dataset.addBtn)
 })
-
-    
-    
-    
-
-// searched.forEach(movieDetails => 
-//     fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(movieDetails)}&plot=short`)
-// )
-
-
 
 function renderMovieHTML(data){
         let myMovieHTML = ""
@@ -77,18 +71,17 @@ function getMovieHTML(data){
                     <p class="movie-length">${data.Runtime}</p>
                     <p class="movie-genre">${data.Genre}</p>
                     <div class="watchlist-button-container">
-                        <ion-icon class="addBtn" name="add-circle"></ion-icon>
+                        <ion-icon class="addBtn" name="add-circle" data-add-btn="${uuidv4()}"></ion-icon>
                         <p>Watchlist</p>
                     </div>
                 </div>
                 <div>
-                    <p>${data.Plot}</p>
+                    <p class="movie-plot">${data.Plot}</p>
                 </div>
             </div>
         </section>
-        <hr style="border:0.5px solid lightgrey"/>`
+        <hr style="border:0.5px solid lightgrey; width:90%;"/>`
         
-      
       
       return movieHTML
     // console.log(data)
