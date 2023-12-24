@@ -17,41 +17,36 @@ const searchBar = document.getElementById("search-bar-submit")
 //     }
 // })
 
-document.addEventListener('click', (e) => {
+document.addEventListener('click', async (e) => {
     if(e.target === searchBar){
         searched = document.getElementById("search-bar-input").value
 
-        fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
-        .then(res => res.json())
-        .then(data => {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
+        const data = await res.json()
+        try{
             renderMovieHTML(data.Search)
+            console.log(data)}
+        catch(error){
+            console.error('An error occurred:', error)
+            }
+
             console.log(data)
+            }
+            
         })
-    }
-    // if(e.target.dataset == "addBtn"){
-    //     console.log("add")
-    // }
-    console.log(e.target.dataset.addBtn)
-})
 
 function renderMovieHTML(data){
         let myMovieHTML = ""
-        // let movies = data.filter(media => media.Type === "movie")
         let movies = data.filter(({Type, Poster}) => Type === "movie" && Poster != "N/A")
-        movies.forEach(movie => {
-        const movieId = movie.imdbID
-        fetch(`https://www.omdbapi.com/?apikey=7c371e1e&i=${movieId}&plot=short`)
-        .then(res => res.json())
-        .then(detailsData => { 
-            // console.log(detailsData)
-        
-        myMovieHTML += getMovieHTML(detailsData)
-      document.getElementById("main").innerHTML =  myMovieHTML
-    //   console.log(movie)
-        }
-    )
-    })
-}
+        movies.forEach( async movie => {
+            const movieId = movie.imdbID
+            const res = await fetch(`https://www.omdbapi.com/?apikey=7c371e1e&i=${movieId}&plot=short`)
+            const detailsData = await res.json()
+
+            myMovieHTML += getMovieHTML(detailsData)
+            document.getElementById("main").innerHTML =  myMovieHTML
+})}
+
 
 function getMovieHTML(data){
     let movieHTML = ""
