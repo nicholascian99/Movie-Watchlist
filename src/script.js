@@ -1,39 +1,27 @@
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid'
-
-
-let searched = ""
 const myWatchlistArray = []
 const searchBar = document.getElementById("search-bar-submit")
-// const addBtn = document.querySelector(".addBtn")
-
-// const searchBar = document.getElementById("search-bar")
-
-
-//adds click event to submit button that fetches OMDB API and uses that data when it calls renderMovieHTML
-
-// document.addEventListener('click', (e) => {
-//     if(e.target == searchBar){
-//         console.log(e.target)
-//     }
-// })
+let searched = ""
+let clickedData
 
 document.addEventListener('click', async (e) => {
+    // const dataArray 
     if(e.target === searchBar){
         searched = document.getElementById("search-bar-input").value
-
         const res = await fetch(`https://www.omdbapi.com/?apikey=7c371e1e&s=${encodeURIComponent(searched)}&plot=short`)
-        const data = await res.json()
-        try{
-            renderMovieHTML(data.Search)
-            console.log(data)}
-        catch(error){
-            console.error('An error occurred:', error)
-            }
+        clickedData = await res.json()
+            renderMovieHTML(clickedData.Search)
+    }
+    else if(clickedData && e.target.dataset.addBtn){
+        const selectedMovie = clickedData.Search.find(movie => movie.imdbID === e.target.dataset.addBtn)
+        if (selectedMovie) {
+            myWatchlistArray.push(selectedMovie);
+          } else {
+            console.log('Movie not found in data.');
+          }
+          renderWatchlistHTML(myWatchlistArray)
+    }
 
-            console.log(data)
-            }
-            
-        })
+})
 
 function renderMovieHTML(data){
         let myMovieHTML = ""
@@ -45,13 +33,11 @@ function renderMovieHTML(data){
 
             myMovieHTML += getMovieHTML(detailsData)
             document.getElementById("main").innerHTML =  myMovieHTML
-})}
-
+    })
+}
 
 function getMovieHTML(data){
-    let movieHTML = ""
-    // console.log(data)
-              movieHTML += `
+        let movieHTML = `
         <section class="movie-section">
             <div class="poster-container">
                 <img class="movieImg" src="${data.Poster}"/>    
@@ -66,7 +52,7 @@ function getMovieHTML(data){
                     <p class="movie-length">${data.Runtime}</p>
                     <p class="movie-genre">${data.Genre}</p>
                     <div class="watchlist-button-container">
-                        <ion-icon class="addBtn" name="add-circle" data-add-btn="${uuidv4()}"></ion-icon>
+                        <ion-icon class="addBtn" name="add-circle" data-add-btn="${data.imdbID}"></ion-icon>
                         <p>Watchlist</p>
                     </div>
                 </div>
@@ -76,13 +62,20 @@ function getMovieHTML(data){
             </div>
         </section>
         <hr style="border:0.5px solid lightgrey; width:90%;"/>`
-        
-      
       return movieHTML
-    // console.log(data)
 }
-  
 
+function renderWatchlistHTML(data){
+    console.log(data)
+    data.forEach( movie => {
+
+    })
+}
+
+function getWatchlistHTML(data){
+    let watchlistHTML = ``
+
+}
 
 
 
